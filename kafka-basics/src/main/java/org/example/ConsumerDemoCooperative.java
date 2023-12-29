@@ -1,6 +1,9 @@
 package org.example;
 
-import org.apache.kafka.clients.consumer.*;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.CooperativeStickyAssignor;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
@@ -10,9 +13,9 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
-public class ConsumerDemoWithShutdown {
+public class ConsumerDemoCooperative {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConsumerDemoWithShutdown.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConsumerDemoCooperative.class);
 
     public static void main(String[] args) {
 
@@ -36,7 +39,7 @@ public class ConsumerDemoWithShutdown {
 //        properties.setProperty(KafkaKeys.PARTITION_ASSIGNMENT_STRATEGY, RoundRobinAssignor.class.getName());
 //        properties.setProperty(KafkaKeys.PARTITION_ASSIGNMENT_STRATEGY, RangeAssignor.class.getName());
 //        properties.setProperty(KafkaKeys.PARTITION_ASSIGNMENT_STRATEGY, StickyAssignor.class.getName());
-//        properties.setProperty(KafkaKeys.PARTITION_ASSIGNMENT_STRATEGY, RangeAssignor.class.getName());
+        properties.setProperty(KafkaKeys.PARTITION_ASSIGNMENT_STRATEGY, CooperativeStickyAssignor.class.getName());//        properties.setProperty(KafkaKeys.PARTITION_ASSIGNMENT_STRATEGY, RangeAssignor.class.getName());
 
         // create the consumer
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);

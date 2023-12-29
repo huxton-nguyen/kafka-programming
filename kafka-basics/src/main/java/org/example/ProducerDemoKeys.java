@@ -35,8 +35,8 @@ public class ProducerDemoKeys {
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
 
         // send data
-        for (int j = 0; j < 3; j++) {
-            for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            for (int i = 0; i < 30; i++) {
 
                 String key = "id_" + i;
                 String value = "Hello, This is ProducerDemoKeys " + i;

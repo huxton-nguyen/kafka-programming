@@ -15,4 +15,5 @@ public interface KafkaKeys {
     String VALUE_DESERIALIZER = "value.deserializer";
     String GROUP_ID = "group.id";
     String AUTO_OFFSET_RESET = "auto.offset.reset";
+    String PARTITION_ASSIGNMENT_STRATEGY = "partition.assignment.strategy";
 }

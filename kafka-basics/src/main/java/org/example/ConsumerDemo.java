@@ -24,7 +24,7 @@ public class ConsumerDemo {
         logger.info("This is ConsumerDemo");
 
         final String topic = "first_topic";
-        final String groupId = "kafka_programming_group";
+        final String groupId = "test2_group";
 
         // create consumer properties
         Properties properties = new Properties();
@@ -37,7 +37,7 @@ public class ConsumerDemo {
         properties.setProperty(KafkaKeys.VALUE_DESERIALIZER, StringDeserializer.class.getName());
 
         properties.setProperty(KafkaKeys.GROUP_ID, groupId);
-        properties.setProperty(KafkaKeys.AUTO_OFFSET_RESET, "earliest");
+        properties.setProperty(KafkaKeys.AUTO_OFFSET_RESET, "latest");
 
         // create the consumer
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties);
