@@ -30,7 +30,7 @@ public class ConsumerDemo {
         Properties properties = new Properties();
 
         // connect to Kafka Server
-        properties.setProperty(KafkaKeys.BOOTSTRAP_SERVERS, "localhost:9092");
+        properties.setProperty(KafkaKeys.BOOTSTRAP_SERVERS, "localhost:9094");
 
         // set producer properties
         properties.setProperty(KafkaKeys.KEY_DESERIALIZER, StringDeserializer.class.getName());

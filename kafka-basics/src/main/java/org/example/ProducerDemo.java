@@ -40,6 +40,8 @@ public class ProducerDemo {
         // send data
         producer.send(record);
 
+        logger.info("successfully sent record");
+
         // tell the producer to send all data and block until done -- synchronous
         producer.flush();
 

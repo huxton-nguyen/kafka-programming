@@ -1,0 +1,70 @@
+version: '1.0'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.2.1
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      # The place to listen for connections by brokers
+      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_SERVER_ID: 1
+      # 2888: zoo communicates with each other for leader election
+      # 3888: for leader election messages
+#      ZOOKEEPER_SERVERS: zookeeper:2888:3888
+  kafka1:
+    image: confluentinc/cp-kafka:7.2.1
+    container_name: kafka1
+    # Right port its own docker
+    # Left port its own server
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    # It will first run dependent services, after it run this service
+    depends_on:
+      - zookeeper
+    environment:
+      # ID broker, must be unique
+      KAFKA_BROKER_ID: 1
+      # to point to Zookeeper
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # INTERNAL://kafka1:19092, this defines an internal listener to other brokers
+      # or services within the same Docker network can communicate
+      # EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092: to clients outside Docker network
+      # can use to connect
+      # DOCKER://host.docker.internal:29092: to can be used by other Docker containers
+      # running on the same host
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka1:19092,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092,DOCKER://host.docker.internal:29092
+      # Both EXTERNAL and INTERNAL will be mapped to PLAINTEXT protocol
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+  kafka2:
+    image: confluentinc/cp-kafka:7.2.1
+    container_name: kafka2
+    ports:
+      - "9093:9093"
+      - "29093:29093"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka2:19093,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9093,DOCKER://host.docker.internal:29093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+  kafka3:
+    image: confluentinc/cp-kafka:7.2.1
+    container_name: kafka3
+    ports:
+      - "9094:9094"
+      - "29094:29094"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka3:19094,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9094,DOCKER://host.docker.internal:29094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+
